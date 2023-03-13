@@ -1,0 +1,62 @@
+<div>
+    <div class="filter">
+        Cards per page 
+        <input type="number" [(ngModel)]="cardsPerPage" [value]="cardsPerPage" (blur)="changeList(cardsPerPage)"/>
+    </div>
+    <div class="filter">
+      Search Pokemon Name <input  type="text" autocomplete="off" name="search" [(ngModel)]="searchText"
+      >
+      </div>
+      <div class="filter">
+        Search Pokemon Ability <input  type="text" autocomplete="off" name="search" [(ngModel)]="searchAbility"
+        >
+      </div>
+      <div class="filter">
+        <label>Sort By </label>
+        <select style="margin-left:10px" #mySelect [(ngModel)]="sortByCategory" (change)="sortCategory(mySelect.value)">
+            <option >Name</option>
+            <option >Height</option>
+            <option >Weight</option>
+        </select>
+      </div>
+      <div class="d-flex justify-content-center">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"
+    >
+    </pagination-controls>
+  </div>
+<div class="list-items">
+    <div class="container-list" class="card-deck my-3">
+    <div  *ngFor="let i of pokemonList | paginate:{
+        
+            itemsPerPage: cardSize,
+            currentPage: page,
+            totalItems: count
+    }
+     | appFilter: searchText | appAbilityFilter: searchAbility">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src='{{i.sprites.back_default}}' alt="Card image">
+            <div class="card-body">
+                <p class="card-text">Name: {{i.name}}</p>
+                <p class="card-text">Height: {{i.height}}</p>
+                <p class="card-text">Weight: {{i.weight}}</p>
+                <ng-container *ngFor="let j of i.abilities">
+                    <p class="card-text">Ability: {{j.ability.name}}</p>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="d-flex justify-content-center">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"
+    >
+    </pagination-controls>
+  </div>
